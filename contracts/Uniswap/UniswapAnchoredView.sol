@@ -221,6 +221,7 @@ contract UniswapAnchoredView is UniswapConfig {
         uint timeElapsed = block.timestamp - oldTimestamp;
 
         // Calculate uniswap time-weighted average price
+        // Underflow is a property of the accumulators: https://uniswap.org/audit.html#orgc9b3190
         FixedPoint.uq112x112 memory priceAverage = FixedPoint.uq112x112(uint224((nowCumulativePrice - oldCumulativePrice) / timeElapsed));
         uint rawUniswapPriceMantissa = mul(priceAverage.decode112with18(), conversionFactor);
         uint anchorPrice;
